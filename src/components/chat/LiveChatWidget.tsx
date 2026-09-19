@@ -120,11 +120,11 @@ export function LiveChatWidget() {
   const formatTime = (ts: string) => new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-6 right-6 z-[60] flex flex-col items-end gap-3">
       {/* Chat Panel */}
       {isOpen && (
-        <div className="w-[370px] rounded-2xl shadow-2xl overflow-hidden flex flex-col bg-slate-900 border border-slate-700/60"
-          style={{ height: "520px", animation: "slideUp 0.25s ease-out" }}>
+        <div className="w-[calc(100vw-3rem)] sm:w-[370px] rounded-2xl shadow-2xl overflow-hidden flex flex-col bg-slate-900 border border-slate-700/60"
+          style={{ height: "min(520px, 80vh)", animation: "slideUp 0.25s ease-out" }}>
           
           {/* Header */}
           <div className="bg-gradient-to-r from-[#0F4C81] to-[#1a6bb5] px-4 py-3 flex items-center justify-between">
