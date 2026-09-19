@@ -282,8 +282,7 @@ export function AdminSidebar() {
         </div>
       </aside>
 
-      {/* Mobile top spacer */}
-      <div className="h-16 md:hidden shrink-0" />
+
 
       {/* Notification Dropdown Panel */}
       {notifOpen && (

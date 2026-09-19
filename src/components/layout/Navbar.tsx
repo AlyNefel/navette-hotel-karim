@@ -212,10 +212,20 @@ export function Navbar() {
                   </button>
                 ))}
               </div>
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  setRouletteOpen(true);
+                }}
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-amber-100 text-amber-700 border border-amber-300 rounded-xl text-sm font-bold shadow-sm"
+              >
+                <Gift className="w-4 h-4" />
+                {t("spinAndWin")}
+              </button>
               <Link
                 href="/transfers"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-terracotta-warmth text-white rounded-xl text-sm font-semibold"
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-terracotta-warmth text-white rounded-xl text-sm font-semibold shadow-md"
               >
                 <CalendarDays className="w-4 h-4" />
                 {t("bookNow")}

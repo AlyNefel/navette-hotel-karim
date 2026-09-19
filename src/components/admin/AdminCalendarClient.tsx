@@ -241,7 +241,7 @@ export default function AdminCalendarClient({ bookings }: { bookings: Booking[] 
                           }`}
                         >
                           <BookingDot type={b.type} />
-                          <span className="truncate">{b.name}</span>
+                          <span className="truncate hidden md:inline">{b.name}</span>
                         </div>
                       ))}
                       {dayBookings.length > 3 && (

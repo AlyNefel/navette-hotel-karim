@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import PusherClient from "pusher-js";
 import { AdminTopBar } from "@/components/admin/AdminSidebar";
-import { MessageSquare, Send, Bot, User, Users, Wifi, WifiOff } from "lucide-react";
+import { MessageSquare, Send, Bot, User, Users, Wifi, WifiOff, ChevronLeft } from "lucide-react";
 
 type ChatMessage = {
   from: "user" | "ai" | "admin";
@@ -140,12 +140,12 @@ export default function AdminChatPage() {
   const activeMessages = activeSession ? (messages[activeSession] || []) : [];
 
   return (
-    <div className="flex flex-col h-screen bg-slate-50">
+    <div className="flex flex-col h-full bg-slate-50">
       <AdminTopBar title="Live Chat" />
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sessions sidebar */}
-        <div className="w-72 border-r border-slate-200 flex flex-col bg-white shrink-0">
+        <div className={`w-full md:w-72 border-r border-slate-200 flex-col bg-white shrink-0 ${activeSession ? 'hidden md:flex' : 'flex'}`}>
           <div className="p-4 border-b border-slate-100 flex items-center justify-between">
             <div className="flex items-center gap-2 text-slate-700">
               <Users className="w-4 h-4 text-slate-400" />
@@ -210,7 +210,7 @@ export default function AdminChatPage() {
         </div>
 
         {/* Chat area */}
-        <div className="flex-1 flex flex-col bg-slate-50 overflow-hidden">
+        <div className={`flex-1 flex-col bg-slate-50 overflow-hidden ${!activeSession ? 'hidden md:flex' : 'flex'}`}>
           {!activeSession ? (
             <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
               <div className="w-20 h-20 rounded-3xl bg-white border border-slate-200 shadow-sm flex items-center justify-center mb-5">
@@ -224,8 +224,14 @@ export default function AdminChatPage() {
           ) : (
             <>
               {/* Chat header */}
-              <div className="px-6 py-4 border-b border-slate-200 bg-white flex items-center gap-3 shadow-sm">
-                <div className="w-10 h-10 rounded-full bg-[#0F4C81]/10 flex items-center justify-center">
+              <div className="px-4 md:px-6 py-4 border-b border-slate-200 bg-white flex items-center gap-3 shadow-sm">
+                <button 
+                  onClick={() => setActiveSession(null)} 
+                  className="md:hidden w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <div className="w-10 h-10 rounded-full bg-[#0F4C81]/10 flex items-center justify-center shrink-0">
                   <User className="w-5 h-5 text-[#0F4C81]" />
                 </div>
                 <div>
