@@ -4,14 +4,15 @@ import Gift from "@/models/Gift";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const data = await req.json();
     await connectToDatabase();
     
     const updatedGift = await Gift.findByIdAndUpdate(
-      params.id,
+      id,
       { $set: data },
       { new: true }
     );
@@ -32,11 +33,12 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await connectToDatabase();
-    const deletedGift = await Gift.findByIdAndDelete(params.id);
+    const deletedGift = await Gift.findByIdAndDelete(id);
     
     if (!deletedGift) {
       return NextResponse.json({ error: "Gift not found" }, { status: 404 });

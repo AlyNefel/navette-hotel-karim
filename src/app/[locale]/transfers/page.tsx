@@ -32,7 +32,6 @@ export default function TransfersPage() {
     name: '',
     email: '',
     phone: '',
-    phone: '',
     specialRequests: '',
   });
   const t = useTranslations('Transfers');
