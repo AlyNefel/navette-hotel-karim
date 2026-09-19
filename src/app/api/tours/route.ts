@@ -6,7 +6,12 @@ import Tour from '@/models/Tour';
 export async function GET() {
   try {
     await connectToDatabase();
-    const tours = await Tour.find({ isActive: true }).sort({ createdAt: -1 }).lean();
+    let tours = await Tour.find({ isActive: true }).sort({ createdAt: -1 }).lean();
+    if (tours.length === 0) {
+      const { tours: hardcodedTours } = await import('@/lib/tours-data');
+      await Tour.insertMany(hardcodedTours);
+      tours = await Tour.find({ isActive: true }).sort({ createdAt: -1 }).lean();
+    }
     return NextResponse.json(tours);
   } catch (err) {
     console.error('GET /api/tours error:', err);
