@@ -22,11 +22,13 @@ import {
   User,
   Wifi,
   WifiOff,
+  Calendar,
 } from "lucide-react";
 
 const navItems = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/bookings", label: "Bookings", icon: CalendarCheck },
+  { href: "/admin/calendar", label: "Calendar", icon: Calendar },
   { href: "/admin/tours", label: "Excursions", icon: MapPin },
   { href: "/admin/chat", label: "Live Chat", icon: MessageSquare },
   { href: "/admin/gifts", label: "Roulette Gifts", icon: Gift },
