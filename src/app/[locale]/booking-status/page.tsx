@@ -118,7 +118,7 @@ export default function BookingStatusPage() {
           <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">
             {t('reference')}
           </label>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1 flex items-center gap-3 bg-slate-800/60 border border-slate-700/50 rounded-xl px-4">
               <Hash className="w-4 h-4 text-slate-500 flex-shrink-0" />
               <input
@@ -126,13 +126,13 @@ export default function BookingStatusPage() {
                 value={ref}
                 onChange={(e) => setRef(e.target.value)}
                 placeholder={t('referencePlaceholder')}
-                className="flex-1 bg-transparent py-3.5 text-sm text-white placeholder-slate-600 outline-none font-mono"
+                className="flex-1 bg-transparent py-3.5 text-sm text-white placeholder-slate-600 outline-none font-mono min-w-0"
               />
             </div>
             <button
               type="submit"
               disabled={loading || !ref.trim()}
-              className="px-5 py-3.5 bg-[#0F4C81] hover:bg-[#1a6bb5] text-white font-bold rounded-xl transition disabled:opacity-40 whitespace-nowrap"
+              className="w-full sm:w-auto px-5 py-3.5 bg-[#0F4C81] hover:bg-[#1a6bb5] text-white font-bold rounded-xl transition disabled:opacity-40 whitespace-nowrap flex justify-center items-center"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -242,13 +242,13 @@ export default function BookingStatusPage() {
 
 function DetailRow({ icon: Icon, label, value }: { icon: any; label: string; value: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-4 py-3.5">
-      <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center flex-shrink-0">
+    <div className="flex items-start sm:items-center gap-4 py-3.5">
+      <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center flex-shrink-0 mt-1 sm:mt-0">
         <Icon className="w-4 h-4 text-slate-500" />
       </div>
-      <div className="flex items-center justify-between flex-1 min-w-0">
-        <span className="text-sm text-slate-500 font-sans">{label}</span>
-        <span className="text-sm text-slate-200 font-sans font-medium text-right">{value}</span>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between flex-1 min-w-0 gap-1 sm:gap-4">
+        <span className="text-sm text-slate-500 font-sans shrink-0">{label}</span>
+        <span className="text-sm text-slate-200 font-sans font-medium sm:text-right break-words">{value}</span>
       </div>
     </div>
   );
