@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { Plane, Car, Users, CalendarDays, Clock, MapPin, Check, ArrowRight, ShieldCheck } from 'lucide-react';
@@ -30,15 +30,27 @@ export default function TransfersPage() {
   const [direction, setDirection] = useState<'airport_to_hotel' | 'hotel_to_airport'>('airport_to_hotel');
   const [selectedVehicle, setSelectedVehicle] = useState(transferTypes[0]);
   const [formData, setFormData] = useState({
-    date: prefilledDate,
+    date: '',
     time: '',
     flightNumber: '',
-    passengers: prefilledPassengers,
+    passengers: 1,
     name: '',
     email: '',
     phone: '',
     specialRequests: '',
   });
+
+  // Hydrate from URL after mount to avoid Next.js SSR mismatch
+  useEffect(() => {
+    if (prefilledDate || prefilledPassengers > 1) {
+      setFormData(prev => ({
+        ...prev,
+        date: prefilledDate || prev.date,
+        passengers: prefilledPassengers || prev.passengers,
+      }));
+    }
+  }, [prefilledDate, prefilledPassengers]);
+
   const t = useTranslations('Transfers');
   const router = useRouter();
 

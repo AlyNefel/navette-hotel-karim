@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CalendarDays, Clock, MapPin, Check, ArrowRight, ShieldCheck, Users, Hotel } from 'lucide-react';
 import { useRouter } from '@/i18n/routing';
@@ -14,14 +14,25 @@ export function TourBookingClient({ tour }: { tour: Tour }) {
 
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    date: prefilledDate,
-    passengers: prefilledGuests,
+    date: '',
+    passengers: 1,
     name: '',
     email: '',
     phone: '',
     specialRequests: '',
     pickupLocation: 'Hotel Karim Lobby',
   });
+
+  useEffect(() => {
+    if (prefilledDate || prefilledGuests > 1) {
+      setFormData(prev => ({
+        ...prev,
+        date: prefilledDate || prev.date,
+        passengers: prefilledGuests || prev.passengers,
+      }));
+    }
+  }, [prefilledDate, prefilledGuests]);
+
   const router = useRouter();
 
   const handleNext = async (e: React.FormEvent) => {
