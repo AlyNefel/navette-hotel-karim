@@ -1,13 +1,17 @@
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import { tours } from '@/lib/tours-data';
+import { getToursFromDB } from '@/lib/get-tours';
 import { Clock, Users, Star, MapPin, Check, X, CalendarDays } from 'lucide-react';
 import type { Metadata } from 'next';
 import { TourBookingClient } from '@/components/tours/TourBookingClient';
+import type { Tour } from '@/lib/tours-data';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const tour = tours.find((t) => t.slug === slug);
+  const tours = await getToursFromDB();
+  const tour = tours.find((t: Tour) => t.slug === slug);
   if (!tour) return { title: 'Tour Not Found' };
   
   return {
@@ -20,7 +24,8 @@ export default async function TourDetailsPage({ params }: { params: Promise<{ lo
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const tour = tours.find((t) => t.slug === slug);
+  const tours = await getToursFromDB();
+  const tour = tours.find((t: Tour) => t.slug === slug);
   if (!tour) notFound();
 
   return (

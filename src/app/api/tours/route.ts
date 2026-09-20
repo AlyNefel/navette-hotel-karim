@@ -1,17 +1,12 @@
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
 import Tour from '@/models/Tour';
+import { getToursFromDB } from '@/lib/get-tours';
 
 // GET all tours
 export async function GET() {
   try {
-    await connectToDatabase();
-    let tours = await Tour.find({ isActive: true }).sort({ createdAt: -1 }).lean();
-    if (tours.length === 0) {
-      const { tours: hardcodedTours } = await import('@/lib/tours-data');
-      await Tour.insertMany(hardcodedTours);
-      tours = await Tour.find({ isActive: true }).sort({ createdAt: -1 }).lean();
-    }
+    const tours = await getToursFromDB();
     return NextResponse.json(tours);
   } catch (err) {
     console.error('GET /api/tours error:', err);

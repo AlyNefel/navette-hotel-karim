@@ -9,15 +9,12 @@ export const metadata: Metadata = {
   keywords: 'Tunisia tours, Sidi Bou Said tour, Dougga day trip, Sahara desert tour, Carthage excursion, Hotel Karim tours',
 };
 
+export const dynamic = 'force-dynamic';
+
+import { getToursFromDB } from '@/lib/get-tours';
+
 async function getTours() {
-  try {
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/tours`, { next: { revalidate: 60 } });
-    if (!res.ok) return [];
-    return res.json();
-  } catch {
-    return [];
-  }
+  return await getToursFromDB();
 }
 
 export default async function ToursPage({ params }: { params: Promise<{ locale: string }> }) {
