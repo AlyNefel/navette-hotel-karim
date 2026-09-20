@@ -93,7 +93,7 @@ export default async function TourDetailsPage({ params }: { params: Promise<{ lo
         <section>
           <h2 className="text-2xl font-bold font-heading text-mediterranean-blue dark:text-white mb-6">Highlights</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {tour.highlights.map((highlight, idx) => (
+            {tour.highlights.map((highlight: string, idx: number) => (
               <li key={idx} className="flex items-start gap-3">
                 <div className="mt-1 bg-golden-sun-gold/20 p-1 rounded-full">
                   <Star className="w-4 h-4 text-golden-sun-gold fill-golden-sun-gold" />
@@ -108,7 +108,7 @@ export default async function TourDetailsPage({ params }: { params: Promise<{ lo
         <section>
           <h2 className="text-2xl font-bold font-heading text-mediterranean-blue dark:text-white mb-8">Itinerary</h2>
           <div className="space-y-8">
-            {tour.itinerary.map((stop, idx) => (
+            {tour.itinerary.map((stop: any, idx: number) => (
               <div key={idx} className="relative pl-8 md:pl-0">
                 <div className="md:grid md:grid-cols-5 md:gap-8 items-start">
                   <div className="hidden md:block col-span-1 text-right pt-1">
@@ -136,7 +136,7 @@ export default async function TourDetailsPage({ params }: { params: Promise<{ lo
               <Check className="w-5 h-5" /> What's Included
             </h3>
             <ul className="space-y-3">
-              {tour.includes.map((item, idx) => (
+              {tour.includes.map((item: string, idx: number) => (
                 <li key={idx} className="flex items-start gap-2 text-sm text-green-700 dark:text-green-300/80">
                   <Check className="w-4 h-4 mt-0.5 shrink-0" />
                   {item}
@@ -149,7 +149,7 @@ export default async function TourDetailsPage({ params }: { params: Promise<{ lo
               <X className="w-5 h-5" /> Not Included
             </h3>
             <ul className="space-y-3">
-              {tour.excludes.map((item, idx) => (
+              {tour.excludes.map((item: string, idx: number) => (
                 <li key={idx} className="flex items-start gap-2 text-sm text-red-700 dark:text-red-300/80">
                   <X className="w-4 h-4 mt-0.5 shrink-0" />
                   {item}
