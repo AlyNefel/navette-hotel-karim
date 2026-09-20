@@ -113,7 +113,8 @@ export async function POST(request: Request) {
     });
 
     // Send confirmation email directly (no localhost HTTP call)
-    sendConfirmationEmail({
+    // MUST AWAIT THIS! Otherwise Vercel kills the function before the email sends.
+    await sendConfirmationEmail({
       to: email,
       name,
       bookingRef: newBooking._id.toString(),
