@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Plane, Car, Users, CalendarDays, Clock, MapPin, Check, ArrowRight, ShieldCheck } from 'lucide-react';
 import Image from 'next/image';
 import { Link, useRouter } from '@/i18n/routing';
+import { useSearchParams } from 'next/navigation';
 
 const transferTypes = [
   {
@@ -21,14 +22,18 @@ const transferTypes = [
 ];
 
 export default function TransfersPage() {
+  const searchParams = useSearchParams();
+  const prefilledDate = searchParams.get('date') || '';
+  const prefilledPassengers = parseInt(searchParams.get('passengers') || '1') || 1;
+
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState<'airport_to_hotel' | 'hotel_to_airport'>('airport_to_hotel');
   const [selectedVehicle, setSelectedVehicle] = useState(transferTypes[0]);
   const [formData, setFormData] = useState({
-    date: '',
+    date: prefilledDate,
     time: '',
     flightNumber: '',
-    passengers: 1,
+    passengers: prefilledPassengers,
     name: '',
     email: '',
     phone: '',

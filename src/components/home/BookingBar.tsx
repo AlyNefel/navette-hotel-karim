@@ -15,14 +15,23 @@ export function BookingBar() {
   const [date, setDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [passengers, setPassengers] = useState(2);
+  const [destination, setDestination] = useState("");
   const router = useRouter();
 
   const handleSearch = () => {
     const locale = "en";
     if (selectedType === "transfers") {
-      router.push(`/${locale}/transfers?date=${date}&passengers=${passengers}`);
+      const params = new URLSearchParams({ date, passengers: String(passengers) });
+      if (returnDate) params.set('returnDate', returnDate);
+      router.push(`/${locale}/transfers?${params.toString()}`);
     } else {
-      router.push(`/${locale}/tours?date=${date}&guests=${passengers}`);
+      const params = new URLSearchParams({ date, guests: String(passengers) });
+      if (destination) {
+        // Navigate directly to the specific tour page with prefilled date/guests
+        router.push(`/${locale}/tours/${destination}?${params.toString()}`);
+      } else {
+        router.push(`/${locale}/tours?${params.toString()}`);
+      }
     }
   };
 
@@ -98,12 +107,16 @@ export function BookingBar() {
                   <MapPin className="w-3.5 h-3.5 text-terracotta-warmth" />
                   Destination
                 </label>
-                <select className="w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-mediterranean-blue/50 transition-all bg-white/70 dark:bg-slate-800/70 font-sans appearance-none">
+                <select
+                  value={destination}
+                  onChange={(e) => setDestination(e.target.value)}
+                  className="w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-mediterranean-blue/50 transition-all bg-white/70 dark:bg-slate-800/70 font-sans appearance-none"
+                >
                   <option value="">Any destination</option>
-                  <option>Sidi Bou Said & Carthage</option>
-                  <option>Dougga & Zaghouan</option>
-                  <option>Tozeur & Sahara Desert</option>
-                  <option>Custom Itinerary</option>
+                  <option value="sidi-bou-said-carthage">Sidi Bou Said &amp; Carthage</option>
+                  <option value="dougga-zaghouan">Dougga &amp; Zaghouan</option>
+                  <option value="sahara-desert">Tozeur &amp; Sahara Desert</option>
+                  <option value="custom-itinerary">Custom Itinerary</option>
                 </select>
               </div>
             )}

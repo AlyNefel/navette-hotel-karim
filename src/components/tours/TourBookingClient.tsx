@@ -4,13 +4,18 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CalendarDays, Clock, MapPin, Check, ArrowRight, ShieldCheck, Users, Hotel } from 'lucide-react';
 import { useRouter } from '@/i18n/routing';
+import { useSearchParams } from 'next/navigation';
 import type { Tour } from '@/lib/tours-data';
 
 export function TourBookingClient({ tour }: { tour: Tour }) {
+  const searchParams = useSearchParams();
+  const prefilledDate = searchParams.get('date') || '';
+  const prefilledGuests = parseInt(searchParams.get('guests') || '1') || 1;
+
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    date: '',
-    passengers: 1,
+    date: prefilledDate,
+    passengers: prefilledGuests,
     name: '',
     email: '',
     phone: '',
