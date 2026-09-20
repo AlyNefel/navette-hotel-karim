@@ -13,13 +13,8 @@ export async function getToursFromDB() {
       tours = await Tour.find({ isActive: true }).sort({ createdAt: -1 }).lean();
     }
     
-    // Convert ObjectId to string to avoid serialization issues in Next.js
-    return tours.map((tour: any) => ({
-      ...tour,
-      _id: tour._id?.toString(),
-      createdAt: tour.createdAt?.toISOString(),
-      updatedAt: tour.updatedAt?.toISOString()
-    }));
+    // Convert all nested ObjectIds and Dates to string to avoid serialization issues in Next.js
+    return JSON.parse(JSON.stringify(tours));
   } catch (error) {
     console.error("Error fetching or seeding tours:", error);
     return [];
