@@ -84,7 +84,7 @@ function buildEmailHtml(data: {
       <!-- Booking Reference -->
       <div style="background:linear-gradient(135deg,#0F4C8115,#E0A96D15);border:2px dashed #E0A96D70;border-radius:12px;padding:18px 24px;margin-bottom:28px;text-align:center;">
         <p style="font-family:sans-serif;font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:2px;text-transform:uppercase;margin:0 0 8px;">Your Booking Reference</p>
-        <p style="font-family:monospace;font-size:20px;font-weight:900;color:#0F4C81;margin:0;letter-spacing:2px;">${data.bookingRef}</p>
+        <p style="font-family:monospace;font-size:20px;font-weight:900;color:#0F4C81;margin:0;letter-spacing:2px;">${data.bookingRef.slice(-7).toUpperCase()}</p>
         <p style="font-family:sans-serif;font-size:12px;color:#64748b;margin:8px 0 0;">Keep this safe — you'll need it to check your booking status</p>
       </div>
 
@@ -184,7 +184,7 @@ export async function POST(request: Request) {
     await transporter.sendMail({
       from: `"Hotel Karim" <${process.env.SMTP_USER}>`,
       to,
-      subject: `${status === 'confirmed' ? '✅ Booking Confirmed' : '📋 Booking Received'} – Hotel Karim [Ref: ${bookingRef.slice(-8).toUpperCase()}]`,
+      subject: `${status === 'confirmed' ? '✅ Booking Confirmed' : '📋 Booking Received'} – Hotel Karim [Ref: ${bookingRef.slice(-7).toUpperCase()}]`,
       html: buildEmailHtml({
         name,
         bookingRef,

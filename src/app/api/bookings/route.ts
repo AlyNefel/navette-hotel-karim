@@ -23,7 +23,7 @@ function buildEmailHtml(data: {
     <p style="font-size:17px;color:#1e293b;margin-bottom:24px;">Dear <strong>${data.name}</strong>,<br/>Thank you for choosing Hotel Karim! We have received your booking request and will confirm it shortly.</p>
     <div style="background:linear-gradient(135deg,#0F4C8115,#E0A96D15);border:2px dashed #E0A96D70;border-radius:12px;padding:18px 24px;margin-bottom:28px;text-align:center;">
       <p style="font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:2px;text-transform:uppercase;margin:0 0 8px;">Your Booking Reference</p>
-      <p style="font-family:monospace;font-size:20px;font-weight:900;color:#0F4C81;margin:0;letter-spacing:2px;">${data.bookingRef}</p>
+      <p style="font-family:monospace;font-size:20px;font-weight:900;color:#0F4C81;margin:0;letter-spacing:2px;">${data.bookingRef.slice(-7).toUpperCase()}</p>
       <p style="font-size:12px;color:#64748b;margin:8px 0 0;">Use this to track your booking status</p>
     </div>
     <table style="width:100%;border-collapse:collapse;font-size:14px;margin-bottom:28px;">
@@ -66,7 +66,7 @@ async function sendConfirmationEmail(data: {
     await transporter.sendMail({
       from: `"Hotel Karim" <${process.env.SMTP_USER}>`,
       to: data.to,
-      subject: `📋 Booking Received – Hotel Karim [Ref: ${data.bookingRef.slice(-8).toUpperCase()}]`,
+      subject: `📋 Booking Received – Hotel Karim [Ref: ${data.bookingRef.slice(-7).toUpperCase()}]`,
       html: buildEmailHtml({
         name: data.name,
         bookingRef: data.bookingRef,
