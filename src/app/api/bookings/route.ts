@@ -96,7 +96,7 @@ async function sendConfirmationEmail(data: {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { type, direction, date, time, flightNumber, passengers, name, email, phone, specialRequests, price } = body;
+    const { type, direction, date, time, flightNumber, passengers, name, email, phone, specialRequests, price, tour_name } = body;
 
     await connectToDatabase();
 
@@ -114,6 +114,7 @@ export async function POST(request: Request) {
       vehicle: 'Ford Ranger XLT',
       special_requests: specialRequests,
       price: price || 35,
+      tour_name: tour_name || '',
     });
 
     // Send confirmation email directly (no localhost HTTP call)

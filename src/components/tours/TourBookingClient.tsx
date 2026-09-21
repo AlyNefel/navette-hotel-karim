@@ -51,6 +51,7 @@ export function TourBookingClient({ tour }: { tour: Tour }) {
           specialRequests: `Pickup: ${formData.pickupLocation} | Notes: ${formData.specialRequests}`,
           price: tour.price * formData.passengers,
           direction: tour.name,
+          tour_name: tour.name,
         }),
       });
     } catch (err) {

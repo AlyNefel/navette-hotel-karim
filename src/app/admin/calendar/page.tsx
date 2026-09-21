@@ -2,6 +2,9 @@ import connectToDatabase from "@/lib/mongodb";
 import Booking from "@/models/Booking";
 import AdminCalendarClient from "@/components/admin/AdminCalendarClient";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function AdminCalendarPage() {
   await connectToDatabase();
 
