@@ -20,7 +20,11 @@ function buildEmailHtml(data: {
     <p style="color:rgba(255,255,255,0.75);margin:6px 0 0;font-size:13px;letter-spacing:2px;text-transform:uppercase;">${isTransfer ? 'Transfer' : 'Tour'} Booking Confirmation</p>
   </div>
   <div style="padding:32px;">
-    <p style="font-size:17px;color:#1e293b;margin-bottom:24px;">Dear <strong>${data.name}</strong>,<br/>Thank you for choosing Hotel Karim! We have received your booking request and will confirm it shortly.</p>
+    <p style="font-size:17px;color:#1e293b;margin-bottom:24px;">Dear <strong>${data.name}</strong>,<br/>Thank you for choosing Hotel Karim! 
+      ${data.status === 'confirmed' 
+        ? '<br/><br/><strong style="color:#22c55e;font-size:19px;">🎉 Good news! Your booking is fully CONFIRMED.</strong><br/>We look forward to welcoming you!' 
+        : 'We have received your booking request and will confirm it shortly.'}
+    </p>
     <div style="background:linear-gradient(135deg,#0F4C8115,#E0A96D15);border:2px dashed #E0A96D70;border-radius:12px;padding:18px 24px;margin-bottom:28px;text-align:center;">
       <p style="font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:2px;text-transform:uppercase;margin:0 0 8px;">Your Booking Reference</p>
       <p style="font-family:monospace;font-size:20px;font-weight:900;color:#0F4C81;margin:0;letter-spacing:2px;">${data.bookingRef.slice(-7).toUpperCase()}</p>
@@ -37,7 +41,7 @@ function buildEmailHtml(data: {
     <div style="text-align:center;margin:32px 0;">
       <a href="${data.lookupUrl}" style="display:inline-block;background:linear-gradient(135deg,#0F4C81,#1a6bb5);color:white;text-decoration:none;padding:14px 32px;border-radius:999px;font-weight:700;font-size:15px;">🔍 Track My Booking</a>
     </div>
-    <p style="font-size:13px;color:#64748b;text-align:center;">Questions? WhatsApp: <a href="https://wa.me/21620125082" style="color:#0F4C81;font-weight:600;">+216 20 125 082</a></p>
+    <p style="font-size:13px;color:#64748b;text-align:center;">Questions? WhatsApp: <a href="https://wa.me/21628580539" style="color:#0F4C81;font-weight:600;">+216 28 580 539</a></p>
   </div>
   <div style="background:#f8fafc;padding:20px 32px;text-align:center;border-top:1px solid #e2e8f0;">
     <p style="font-size:12px;color:#94a3b8;margin:0;">© Hotel Karim, Tunis, Tunisia</p>

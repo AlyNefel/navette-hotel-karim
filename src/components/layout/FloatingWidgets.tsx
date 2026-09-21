@@ -14,7 +14,7 @@ export function FloatingWidgets() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const whatsappNumber = "21620125082";
+  const whatsappNumber = "21628580539";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Hello%2C%20I%20would%20like%20to%20inquire%20about%20Hotel%20Karim%20services.`;
 
   return (

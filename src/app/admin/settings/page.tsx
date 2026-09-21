@@ -36,7 +36,7 @@ export default function AdminSettings() {
               { label: "Twilio Account SID", key: "TWILIO_ACCOUNT_SID", desc: "For WhatsApp forwarding" },
               { label: "Twilio Auth Token", key: "TWILIO_AUTH_TOKEN", desc: "Twilio authentication" },
               { label: "Twilio WhatsApp Number", key: "TWILIO_WHATSAPP_NUMBER", desc: "e.g. whatsapp:+14155238886" },
-              { label: "Hotel WhatsApp", key: "HOTEL_OWNER_WHATSAPP", desc: "Your number: whatsapp:+21620125082" },
+              { label: "Hotel WhatsApp", key: "HOTEL_OWNER_WHATSAPP", desc: "Your number: whatsapp:+21628580539" },
             ].map(({ label, key, desc }) => (
               <div key={key} className="space-y-1">
                 <label className="text-slate-300 text-sm font-medium">{label}</label>
@@ -59,7 +59,7 @@ export default function AdminSettings() {
           <div className="p-6 space-y-4">
             {[
               { label: "Hotel Name", defaultValue: "Hotel Karim" },
-              { label: "WhatsApp Number", defaultValue: "+21620125082" },
+              { label: "WhatsApp Number", defaultValue: "+21628580539" },
               { label: "Email", defaultValue: "info@hotelkarim.com" },
               { label: "Address", defaultValue: "Tunis, Tunisia" },
             ].map(({ label, defaultValue }) => (
@@ -103,7 +103,7 @@ RESEND_API_KEY=re_xxxxxxxx
 TWILIO_ACCOUNT_SID=ACxxxxxx
 TWILIO_AUTH_TOKEN=your-auth-token
 TWILIO_WHATSAPP_NUMBER=whatsapp:+14155238886
-HOTEL_OWNER_WHATSAPP=whatsapp:+21620125082`}
+HOTEL_OWNER_WHATSAPP=whatsapp:+21628580539`}
             </pre>
           </div>
         </div>

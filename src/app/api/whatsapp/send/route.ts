@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     const accountSid = process.env.TWILIO_ACCOUNT_SID;
     const authToken = process.env.TWILIO_AUTH_TOKEN;
     const fromWhatsAppNumber = process.env.TWILIO_WHATSAPP_NUMBER; // e.g., 'whatsapp:+14155238886'
-    const toWhatsAppNumber = process.env.HOTEL_OWNER_WHATSAPP; // e.g., 'whatsapp:+21620125082'
+    const toWhatsAppNumber = process.env.HOTEL_OWNER_WHATSAPP; // e.g., 'whatsapp:+21628580539'
 
     if (accountSid && authToken && fromWhatsAppNumber && toWhatsAppNumber) {
       // Basic Twilio API integration

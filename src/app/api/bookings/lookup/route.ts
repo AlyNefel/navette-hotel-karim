@@ -13,8 +13,23 @@ export async function GET(request: Request) {
 
     await connectToDatabase();
 
-    // The booking reference IS the MongoDB _id
-    const booking = await Booking.findById(ref).lean() as any;
+    // The client provides the last 7 characters of the ObjectId
+    const normalizedRef = ref.trim().toLowerCase();
+    
+    let booking;
+    // Fallback if they provide the full 24-char ID
+    if (normalizedRef.length === 24) {
+      booking = await Booking.findById(normalizedRef).lean() as any;
+    } else {
+      booking = await Booking.findOne({
+        $expr: {
+          $eq: [
+            { $substr: [{ $toString: "$_id" }, 17, 7] },
+            normalizedRef
+          ]
+        }
+      }).lean() as any;
+    }
 
     if (!booking) {
       return NextResponse.json({ error: 'No booking found with that reference. Please double-check and try again.' }, { status: 404 });
@@ -40,7 +55,7 @@ export async function GET(request: Request) {
       created_at: booking.createdAt,
     });
   } catch (err: any) {
-    // Handle invalid ObjectId format gracefully
+    // Handle invalid format gracefully if it happens
     if (err.name === 'CastError') {
       return NextResponse.json({ error: 'Invalid booking reference format.' }, { status: 400 });
     }

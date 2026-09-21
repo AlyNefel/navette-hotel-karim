@@ -78,7 +78,10 @@ function buildEmailHtml(data: {
     <div style="padding:32px;">
       <p style="font-size:17px;color:#1e293b;margin-bottom:24px;">
         Dear <strong>${data.name}</strong>,<br/>
-        Thank you for choosing Hotel Karim! ${data.status === 'confirmed' ? 'Your booking has been confirmed. We look forward to welcoming you!' : 'We have received your booking request and will confirm it shortly.'}
+        Thank you for choosing Hotel Karim! 
+        ${data.status === 'confirmed' 
+          ? '<br/><br/><strong style="color:#22c55e;font-size:19px;">🎉 Good news! Your booking is fully CONFIRMED.</strong><br/>We look forward to welcoming you!' 
+          : 'We have received your booking request and will confirm it shortly.'}
       </p>
 
       <!-- Booking Reference -->
@@ -147,7 +150,7 @@ function buildEmailHtml(data: {
       <div style="border-top:1px solid #e2e8f0;padding-top:20px;text-align:center;">
         <p style="font-family:sans-serif;font-size:13px;color:#64748b;margin:0;">
           Questions? Contact us on WhatsApp:
-          <a href="https://wa.me/21620125082" style="color:#0F4C81;font-weight:600;">+216 20 125 082</a>
+          <a href="https://wa.me/21628580539" style="color:#0F4C81;font-weight:600;">+216 28 580 539</a>
         </p>
       </div>
     </div>
