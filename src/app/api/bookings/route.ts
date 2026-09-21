@@ -46,7 +46,7 @@ function buildEmailHtml(data: {
 }
 
 async function sendConfirmationEmail(data: {
-  to: string; name: string; bookingRef: string; bookingType: string;
+  to: string; name: string; bookingRef: string; bookingType: string; status?: string;
   date?: string; time?: string; direction?: string; flightNumber?: string;
   passengers?: number; price?: number; specialRequests?: string;
 }) {
@@ -66,12 +66,12 @@ async function sendConfirmationEmail(data: {
     await transporter.sendMail({
       from: `"Hotel Karim" <${process.env.SMTP_USER}>`,
       to: data.to,
-      subject: `📋 Booking Received – Hotel Karim [Ref: ${data.bookingRef.slice(-7).toUpperCase()}]`,
+      subject: `${data.status === 'confirmed' ? '✅ Booking Confirmed' : '📋 Booking Received'} – Hotel Karim [Ref: ${data.bookingRef.slice(-7).toUpperCase()}]`,
       html: buildEmailHtml({
         name: data.name,
         bookingRef: data.bookingRef,
         bookingType: data.bookingType,
-        status: 'pending',
+        status: data.status || 'pending',
         date: data.date,
         time: data.time,
         direction: data.direction,
@@ -166,6 +166,24 @@ export async function PATCH(request: Request) {
     
     if (!updated) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+    }
+    
+    // If status is updated to confirmed, send the confirmation email
+    if (status === 'confirmed') {
+      await sendConfirmationEmail({
+        to: updated.email,
+        name: updated.name,
+        bookingRef: updated._id.toString(),
+        bookingType: updated.type,
+        status: 'confirmed',
+        date: updated.date,
+        time: updated.time,
+        direction: updated.direction,
+        flightNumber: updated.flight_number,
+        passengers: updated.passengers,
+        price: updated.price,
+        specialRequests: updated.special_requests,
+      }).catch(err => console.error('[Email] Async error:', err));
     }
     
     return NextResponse.json({ success: true, booking: updated });
