@@ -4,6 +4,7 @@ import { BookingBar } from '@/components/home/BookingBar';
 import { ToursSection } from '@/components/home/ToursSection';
 import { ReviewsSection } from '@/components/home/ReviewsSection';
 import { Link } from '@/i18n/routing';
+import { getToursFromDB } from '@/lib/get-tours';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('HomePage');
+  const tours = await getToursFromDB();
 
   return (
     <div className="flex flex-col">
@@ -46,7 +48,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       </section>
 
       {/* 4. Regional Excursions */}
-      <ToursSection />
+      <ToursSection tours={tours} />
 
       {/* 5. Airport Transfer Feature Block */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950">

@@ -5,45 +5,8 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 import { Clock, Users, ArrowRight, Star } from "lucide-react";
-
-const tours = [
-  {
-    name: "Sidi Bou Said & Carthage",
-    category: "Historical & Scenic",
-    description: "Wander the cobblestone streets of the iconic blue-and-white village, then step through the millennia at the ancient Carthaginian ruins.",
-    duration: "Full Day (8h)",
-    groupSize: "Up to 12",
-    price: 65,
-    rating: 4.9,
-    image: "/hero-sidi-bou-said.jpg",
-    badge: "Most Popular",
-    badgeColor: "bg-terracotta-warmth",
-  },
-  {
-    name: "Dougga & Zaghouan",
-    category: "UNESCO Archaeological",
-    description: "Explore one of North Africa's best-preserved Roman cities. Marvel at the soaring Capitol temple set dramatically against the green Tunisian countryside.",
-    duration: "Full Day (9h)",
-    groupSize: "Up to 10",
-    price: 75,
-    rating: 4.8,
-    image: "/tour-dougga.jpg",
-    badge: "UNESCO Heritage",
-    badgeColor: "bg-mediterranean-blue",
-  },
-  {
-    name: "Tozeur & Sahara Desert",
-    category: "Desert Safari",
-    description: "Journey south through dramatic landscapes to the edge of the Sahara. Ride camels at dusk and sleep under a breathtaking canopy of stars.",
-    duration: "2 Days / 3 Days",
-    groupSize: "Up to 8",
-    price: 220,
-    rating: 5.0,
-    image: "/hero-sahara.jpg",
-    badge: "Premium",
-    badgeColor: "bg-golden-sun-gold",
-  },
-];
+import { Link } from '@/i18n/routing';
+import type { Tour } from '@/lib/tours-data';
 
 const containerVariants = {
   hidden: {},
@@ -55,7 +18,7 @@ const cardVariants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
-export function ToursSection() {
+export function ToursSection({ tours }: { tours: Tour[] }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -134,12 +97,12 @@ export function ToursSection() {
                     <p className="text-2xl font-bold text-mediterranean-blue">€{tour.price}</p>
                     <p className="text-xs text-slate-400">per person</p>
                   </div>
-                  <motion.button
-                    whileHover={{ x: 3 }}
-                    className="flex items-center gap-1.5 px-4 py-2 bg-mediterranean-blue text-white text-sm font-semibold rounded-full hover:bg-mediterranean-blue/90 transition-all"
+                  <Link
+                    href={`/tours/${tour.slug}`}
+                    className="flex items-center gap-1.5 px-4 py-2 bg-mediterranean-blue text-white text-sm font-semibold rounded-full hover:bg-mediterranean-blue/90 transition-all hover:translate-x-[3px]"
                   >
                     Book Tour <ArrowRight className="w-4 h-4" />
-                  </motion.button>
+                  </Link>
                 </div>
               </div>
             </motion.div>
