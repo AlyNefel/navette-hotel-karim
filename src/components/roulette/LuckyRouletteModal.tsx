@@ -56,6 +56,10 @@ export function LuckyRouletteModal({ isOpen, onClose }: { isOpen: boolean; onClo
           setLoadingPrizes(false);
         }
       };
+      const hasPlayed = localStorage.getItem("hasSpunLuckyRoulette");
+      if (hasPlayed) {
+        setError("You have already participated in the lucky spin!");
+      }
       
       fetchPrizes();
     }
@@ -63,6 +67,10 @@ export function LuckyRouletteModal({ isOpen, onClose }: { isOpen: boolean; onClo
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (localStorage.getItem("hasSpunLuckyRoulette")) {
+      setError("You have already participated in the lucky spin!");
+      return;
+    }
     if (!name.trim() || !phone.trim()) return;
     if (prizes.length === 0) {
       setError("No prizes available to spin.");
@@ -117,6 +125,7 @@ export function LuckyRouletteModal({ isOpen, onClose }: { isOpen: boolean; onClo
       // Wait 5 seconds for CSS transition to finish
       setTimeout(() => {
         setStep("result");
+        localStorage.setItem("hasSpunLuckyRoulette", "true");
         confetti({
           particleCount: 100,
           spread: 70,
@@ -223,7 +232,8 @@ export function LuckyRouletteModal({ isOpen, onClose }: { isOpen: boolean; onClo
 
                       <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-[#0F4C81] to-[#E0A96D] hover:from-[#1a6bb5] hover:to-[#eaba83] text-white font-bold rounded-xl py-3.5 transition flex items-center justify-center gap-2 mt-2 shadow-lg"
+                        disabled={!!localStorage.getItem("hasSpunLuckyRoulette")}
+                        className="w-full bg-gradient-to-r from-[#0F4C81] to-[#E0A96D] hover:from-[#1a6bb5] hover:to-[#eaba83] text-white font-bold rounded-xl py-3.5 transition flex items-center justify-center gap-2 mt-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <Sparkles className="w-5 h-5" /> Next: Spin the Wheel
                       </button>

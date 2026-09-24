@@ -57,7 +57,7 @@ export default function AdminOverview() {
   const total = bookings.length;
   const revenue = bookings
     .filter((b) => b.status === "confirmed")
-    .reduce((acc, b) => acc + (b.price || 35), 0);
+    .reduce((acc, b) => acc + (b.price || 20), 0);
 
   const stats = [
     { label: "Total Bookings", value: total, icon: CalendarCheck, color: "from-[#0F4C81] to-blue-600", change: "+12%" },
@@ -141,7 +141,7 @@ export default function AdminOverview() {
                           <td className="px-6 py-4">
                             <StatusBadge status={b.status} />
                           </td>
-                          <td className="px-6 py-4 text-[#0F4C81] font-bold">€{b.price || 35}</td>
+                          <td className="px-6 py-4 text-[#0F4C81] font-bold">€{b.price || 20}</td>
                         </tr>
                       ))}
                     </tbody>

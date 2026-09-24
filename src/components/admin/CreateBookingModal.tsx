@@ -24,7 +24,7 @@ export function CreateBookingModal({ isOpen, onClose, onSuccess }: CreateBooking
     flight_number: "",
     passengers: 1,
     vehicle: "Ford Ranger XLT",
-    price: 35,
+    price: 20,
     special_requests: "",
     status: "confirmed"
   });

@@ -251,7 +251,7 @@ export default function BookingsPage() {
                   <div className="pt-5 border-t border-slate-100">
                     <div className="flex justify-between items-center bg-blue-50/50 p-4 rounded-xl border border-blue-100">
                       <span className="text-sm font-bold text-[#0F4C81]">Total Price</span>
-                      <span className="text-xl font-bold text-[#0F4C81]">€{selected.price || 35}</span>
+                      <span className="text-xl font-bold text-[#0F4C81]">€{selected.price || 20}</span>
                     </div>
                   </div>
 

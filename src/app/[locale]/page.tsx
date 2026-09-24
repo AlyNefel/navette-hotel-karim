@@ -88,7 +88,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                   <span className="text-3xl">🚘</span>
                   <div>
                     <p className="font-bold text-slate-800 dark:text-white">Ford Ranger XLT 4×4</p>
-                    <p className="text-3xl font-bold text-mediterranean-blue">€35</p>
+                    <p className="text-3xl font-bold text-mediterranean-blue">€20</p>
                     <p className="text-xs text-slate-500">{t('transfers.upTo4Pax')}</p>
                   </div>
                 </div>

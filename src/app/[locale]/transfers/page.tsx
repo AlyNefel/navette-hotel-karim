@@ -15,7 +15,7 @@ const transferTypes = [
     desc: 'Spacious 4x4 pickup — air-conditioned & comfortable',
     pax: 4,
     suitcases: 4,
-    price: 35,
+    price: 20,
     icon: Car,
     image: '/black-ford-ranger.jpg',
   },

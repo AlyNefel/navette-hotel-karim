@@ -113,7 +113,7 @@ export async function POST(request: Request) {
       passengers,
       vehicle: 'Ford Ranger XLT',
       special_requests: specialRequests,
-      price: price || 35,
+      price: price || 20,
       tour_name: tour_name || '',
     });
 
@@ -129,7 +129,7 @@ export async function POST(request: Request) {
       direction,
       flightNumber,
       passengers,
-      price: price || 35,
+      price: price || 20,
       specialRequests,
     }).catch(err => console.error('[Email] Async error:', err));
 
