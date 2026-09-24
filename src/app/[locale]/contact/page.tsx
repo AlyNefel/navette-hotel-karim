@@ -33,11 +33,11 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
           <div className="order-2 lg:order-1 h-full">
             <ContactInfo />
           </div>
-          <div className="order-1 lg:order-2 h-[400px] lg:h-full min-h-[400px] bg-gradient-to-br from-mediterranean-blue/5 to-transparent rounded-3xl border border-mediterranean-blue/10 flex items-center justify-center relative overflow-hidden">
+          <div className="order-1 lg:order-2 h-[400px] lg:h-full min-h-[400px] bg-gradient-to-br from-slate-900 via-[#0F4C81] to-slate-800 rounded-3xl border border-mediterranean-blue/30 flex items-center justify-center relative overflow-hidden shadow-xl">
             <div className="absolute top-4 left-4 right-4 text-center z-10 pointer-events-none">
-              <p className="text-sm font-semibold text-mediterranean-blue/50 tracking-widest uppercase shadow-sm">{t('premiumTransfers')}</p>
+              <p className="text-sm font-semibold text-white/60 tracking-widest uppercase shadow-sm">{t('premiumTransfers')}</p>
             </div>
-            <img src="/black-ford-ranger.jpg" alt="Ford Ranger XLT" className="w-full h-full object-cover mix-blend-multiply opacity-90 dark:mix-blend-normal" />
+            <img src="/black-ford-ranger.jpg" alt="Ford Ranger XLT" className="w-full h-full object-contain drop-shadow-2xl" />
           </div>
         </div>
 

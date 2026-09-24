@@ -210,11 +210,10 @@ export default function TransfersPage() {
                   <h2 className="text-lg font-bold font-heading mb-4 text-slate-800 dark:text-white">{t('yourVehicle')}</h2>
                   
                   {/* Ford Ranger XLT Fixed Card */}
-                  <div className="rounded-2xl border-2 border-mediterranean-blue bg-mediterranean-blue/5 overflow-hidden mb-6">
-                    <div className="relative h-40 w-full">
-                      <Image src="/black-ford-ranger.jpg" alt="Ford Ranger XLT" fill className="object-cover" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <span className="absolute bottom-3 left-3 bg-mediterranean-blue text-white text-xs font-bold px-3 py-1 rounded-full">Ford Ranger XLT</span>
+                  <div className="rounded-2xl border-2 border-mediterranean-blue bg-gradient-to-br from-slate-900 to-[#0F4C81] overflow-hidden mb-6">
+                    <div className="relative h-44 w-full flex items-center justify-center bg-gradient-to-br from-slate-900 via-[#0F4C81]/70 to-slate-900">
+                      <Image src="/black-ford-ranger.jpg" alt="Ford Ranger XLT" fill className="object-contain drop-shadow-xl" />
+                      <span className="absolute bottom-3 left-3 bg-mediterranean-blue text-white text-xs font-bold px-3 py-1 rounded-full z-10">Ford Ranger XLT</span>
                     </div>
                     <div className="p-4 space-y-3">
                       <p className="text-sm text-slate-600 dark:text-slate-300">{t('vehicleDesc')}</p>

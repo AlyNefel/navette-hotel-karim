@@ -77,9 +77,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               {t('transfers.cta')}
             </Link>
           </div>
-          <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl">
-            <img src="/black-ford-ranger.jpg" alt="Premium Transfer" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-mediterranean-blue/60 to-transparent" />
+          <div className="relative h-[500px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-slate-900 via-[#0F4C81] to-slate-800">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <img src="/black-ford-ranger.jpg" alt="Premium Transfer" className="w-full h-full object-contain drop-shadow-2xl" />
+            </div>
+            {/* subtle bottom overlay for the card */}
+            <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0F4C81]/80 to-transparent" />
             <div className="absolute bottom-8 left-8 right-8">
               <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl p-5 shadow-xl">
                 <div className="flex items-center justify-between mb-3">
