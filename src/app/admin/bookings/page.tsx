@@ -5,7 +5,7 @@ import { AdminTopBar } from "@/components/admin/AdminSidebar";
 import { CreateBookingModal } from "@/components/admin/CreateBookingModal";
 import {
   CalendarCheck, Search, Filter, CheckCircle,
-  XCircle, Clock, Mail, Phone, Users, RefreshCw, ChevronDown, Car, Plane, Plus
+  XCircle, Clock, Mail, Phone, Users, RefreshCw, ChevronDown, Car, Plane, Plus, Trash2
 } from "lucide-react";
 
 type Booking = {
@@ -76,6 +76,25 @@ export default function BookingsPage() {
       });
       if (res.ok) {
         setToast(`Booking ${newStatus} successfully!`);
+        setSelected(null);
+        fetchBookings();
+        setTimeout(() => setToast(""), 3000);
+      }
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const deleteBooking = async (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this booking? This action cannot be undone.")) return;
+    
+    setActionLoading(true);
+    try {
+      const res = await fetch(`/api/bookings?id=${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setToast("Booking deleted successfully!");
         setSelected(null);
         fetchBookings();
         setTimeout(() => setToast(""), 3000);
@@ -308,6 +327,15 @@ export default function BookingsPage() {
                       </button>
                     </div>
                   )}
+                  <div className="pt-2 border-t border-slate-200/60 mt-2">
+                    <button
+                      onClick={() => deleteBooking(selected.id)}
+                      disabled={actionLoading}
+                      className="w-full bg-red-50 text-red-600 hover:bg-red-100 font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      <Trash2 className="w-4 h-4" /> Delete Booking
+                    </button>
+                  </div>
                 </div>
               </div>
             ) : (
