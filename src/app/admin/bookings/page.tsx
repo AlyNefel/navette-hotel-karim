@@ -42,6 +42,7 @@ export default function BookingsPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [toast, setToast] = useState("");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [editingBooking, setEditingBooking] = useState<Booking | null>(null);
 
   const fetchBookings = useCallback(async () => {
     setLoading(true);
@@ -133,7 +134,7 @@ export default function BookingsPage() {
                 <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin text-[#0F4C81]" : ""}`} />
               </button>
               <button 
-                onClick={() => setIsCreateModalOpen(true)}
+                onClick={() => { setEditingBooking(null); setIsCreateModalOpen(true); }}
                 className="flex items-center gap-2 px-4 py-2 bg-[#0F4C81] text-white rounded-xl text-sm font-bold shadow-md hover:bg-[#1a6bb5] transition-colors whitespace-nowrap h-10"
               >
                 <Plus className="w-4 h-4" /> New Booking
@@ -263,6 +264,15 @@ export default function BookingsPage() {
                       </p>
                     </div>
                   )}
+
+                  <div className="pt-3">
+                    <button
+                      onClick={() => { setEditingBooking(selected); setIsCreateModalOpen(true); }}
+                      className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2"
+                    >
+                      Edit Booking Details
+                    </button>
+                  </div>
                 </div>
 
                 <div className="p-6 border-t border-slate-100 bg-slate-50/50 space-y-3">
@@ -314,10 +324,16 @@ export default function BookingsPage() {
       <CreateBookingModal 
         isOpen={isCreateModalOpen} 
         onClose={() => setIsCreateModalOpen(false)} 
+        initialData={editingBooking}
         onSuccess={() => {
           fetchBookings();
-          setToast("Booking created successfully!");
+          setToast(editingBooking ? "Booking updated successfully!" : "Booking created successfully!");
           setTimeout(() => setToast(""), 3000);
+          if (editingBooking) {
+            // Re-fetch or clear selection. We'll clear it to refresh the details view safely.
+            setSelected(null);
+            setEditingBooking(null);
+          }
         }} 
       />
     </div>

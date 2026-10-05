@@ -7,26 +7,55 @@ type CreateBookingModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  initialData?: any;
 };
 
-export function CreateBookingModal({ isOpen, onClose, onSuccess }: CreateBookingModalProps) {
+export function CreateBookingModal({ isOpen, onClose, onSuccess, initialData }: CreateBookingModalProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    type: "transfer",
-    date: "",
-    time: "",
-    direction: "airport_to_hotel",
-    flight_number: "",
-    passengers: 1,
-    vehicle: "Ford Ranger XLT",
-    price: 20,
-    special_requests: "",
-    status: "confirmed"
+    name: initialData?.name || "",
+    email: initialData?.email || "",
+    phone: initialData?.phone || "",
+    type: initialData?.type || "transfer",
+    date: initialData?.date || "",
+    time: initialData?.time || "",
+    direction: initialData?.direction || "airport_to_hotel",
+    flight_number: initialData?.flight_number || "",
+    passengers: initialData?.passengers || 1,
+    vehicle: initialData?.vehicle || "Ford Ranger XLT",
+    price: initialData?.price || 20,
+    special_requests: initialData?.special_requests || "",
+    status: initialData?.status || "confirmed"
+  });
+
+  // Also update when initialData changes, for example when selecting different bookings
+  import("react").then(React => {
+    React.useEffect(() => {
+      if (initialData) {
+        setFormData({
+          name: initialData.name || "",
+          email: initialData.email || "",
+          phone: initialData.phone || "",
+          type: initialData.type || "transfer",
+          date: initialData.date || "",
+          time: initialData.time || "",
+          direction: initialData.direction || "airport_to_hotel",
+          flight_number: initialData.flight_number || "",
+          passengers: initialData.passengers || 1,
+          vehicle: initialData.vehicle || "Ford Ranger XLT",
+          price: initialData.price || 20,
+          special_requests: initialData.special_requests || "",
+          status: initialData.status || "confirmed"
+        });
+      } else {
+        setFormData({
+          name: "", email: "", phone: "", type: "transfer", date: "", time: "", direction: "airport_to_hotel",
+          flight_number: "", passengers: 1, vehicle: "Ford Ranger XLT", price: 20, special_requests: "", status: "confirmed"
+        });
+      }
+    }, [initialData, isOpen]);
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -40,10 +69,11 @@ export function CreateBookingModal({ isOpen, onClose, onSuccess }: CreateBooking
     setError("");
 
     try {
+      const isEdit = !!initialData;
       const res = await fetch("/api/bookings", {
-        method: "POST",
+        method: isEdit ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(isEdit ? { id: initialData.id || initialData._id, ...formData } : formData),
       });
 
       if (!res.ok) {
@@ -65,7 +95,7 @@ export function CreateBookingModal({ isOpen, onClose, onSuccess }: CreateBooking
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
         <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white z-10">
-          <h2 className="text-xl font-bold text-slate-800">Create New Booking</h2>
+          <h2 className="text-xl font-bold text-slate-800">{initialData ? "Edit Booking" : "Create New Booking"}</h2>
           <button onClick={onClose} className="p-2 text-slate-400 hover:bg-slate-100 rounded-lg transition-colors">
             <X className="w-5 h-5" />
           </button>
@@ -192,7 +222,7 @@ export function CreateBookingModal({ isOpen, onClose, onSuccess }: CreateBooking
             Cancel
           </button>
           <button type="submit" form="create-booking-form" disabled={loading} className="px-6 py-2 bg-[#0F4C81] hover:bg-[#1a6bb5] text-white text-sm font-bold rounded-xl transition-colors shadow-md disabled:opacity-50 flex items-center gap-2">
-            {loading ? "Creating..." : "Create Booking"}
+            {loading ? (initialData ? "Updating..." : "Creating...") : (initialData ? "Save Changes" : "Create Booking")}
           </button>
         </div>
       </div>

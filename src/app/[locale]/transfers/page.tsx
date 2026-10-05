@@ -169,7 +169,7 @@ export default function TransfersPage() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('flightNumber')}</label>
-                      <input required type="text" placeholder="e.g. TU723" value={formData.flightNumber} onChange={e => setFormData({...formData, flightNumber: e.target.value})} className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-mediterranean-blue outline-none" />
+                      <input type="text" placeholder="e.g. TU723" value={formData.flightNumber} onChange={e => setFormData({...formData, flightNumber: e.target.value})} className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-mediterranean-blue outline-none" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('passengers')} <span className="text-slate-400 font-normal">{t('maxPax')}</span></label>
@@ -190,7 +190,7 @@ export default function TransfersPage() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('emailAddress')}</label>
-                      <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-mediterranean-blue outline-none" />
+                      <input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-mediterranean-blue outline-none" />
                     </div>
                     <div className="space-y-2 md:col-span-2">
                       <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t('phone')}</label>

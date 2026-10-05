@@ -25,7 +25,7 @@ const BookingSchema: Schema = new Schema(
     type: { type: String, enum: ['transfer', 'tour'], required: true },
     status: { type: String, enum: ['pending', 'confirmed', 'cancelled'], default: 'pending' },
     name: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String },
     phone: { type: String, required: true },
     date: { type: String },
     time: { type: String },

@@ -96,7 +96,7 @@ async function sendConfirmationEmail(data: {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { type, direction, date, time, flightNumber, passengers, name, email, phone, specialRequests, price, tour_name } = body;
+    const { type, direction, date, time, flightNumber, flight_number, passengers, name, email, phone, specialRequests, special_requests, price, tour_name } = body;
 
     await connectToDatabase();
 
@@ -108,11 +108,11 @@ export async function POST(request: Request) {
       phone,
       date,
       time,
-      flight_number: flightNumber,
+      flight_number: flightNumber || flight_number,
       direction,
       passengers,
       vehicle: 'Ford Ranger XLT',
-      special_requests: specialRequests,
+      special_requests: specialRequests || special_requests,
       price: price || 20,
       tour_name: tour_name || '',
     });
@@ -127,10 +127,10 @@ export async function POST(request: Request) {
       date,
       time,
       direction,
-      flightNumber,
+      flightNumber: flightNumber || flight_number,
       passengers,
       price: price || 20,
-      specialRequests,
+      specialRequests: specialRequests || special_requests,
     }).catch(err => console.error('[Email] Async error:', err));
 
     return NextResponse.json({ success: true, booking: newBooking });
@@ -194,6 +194,40 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ success: true, booking: updated });
   } catch (err: any) {
     console.error('PATCH error:', err);
+    return NextResponse.json({ error: err.message || 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, type, direction, date, time, flightNumber, flight_number, passengers, name, email, phone, specialRequests, special_requests, price, tour_name, status } = body;
+    
+    await connectToDatabase();
+    
+    const updated = await Booking.findByIdAndUpdate(id, {
+      type,
+      direction,
+      date,
+      time,
+      flight_number: flightNumber || flight_number,
+      passengers,
+      name,
+      email,
+      phone,
+      special_requests: specialRequests || special_requests,
+      price,
+      tour_name,
+      status
+    }, { new: true });
+    
+    if (!updated) {
+      return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+    }
+    
+    return NextResponse.json({ success: true, booking: updated });
+  } catch (err: any) {
+    console.error('PUT error:', err);
     return NextResponse.json({ error: err.message || 'Internal Server Error' }, { status: 500 });
   }
 }
