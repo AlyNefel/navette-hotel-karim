@@ -1,0 +1,44 @@
+{
+  "name": "Hotel Karim – Admin",
+  "short_name": "Karim Admin",
+  "description": "Admin dashboard for Hotel Karim – manage bookings, transfers, and tours.",
+  "start_url": "/admin/bookings",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F4C81",
+  "theme_color": "#0F4C81",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Bookings",
+      "short_name": "Bookings",
+      "description": "View all bookings",
+      "url": "/admin/bookings",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Calendar",
+      "short_name": "Calendar",
+      "description": "View booking calendar",
+      "url": "/admin/calendar",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "prefer_related_applications": false
+}
