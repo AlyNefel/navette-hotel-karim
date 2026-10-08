@@ -9,11 +9,17 @@ const subSchema = new mongoose.Schema({
 });
 const PushSub = mongoose.models.PushSubscription || mongoose.model('PushSubscription', subSchema);
 
-webpush.setVapidDetails(
-  'mailto:admin@hotelkarim.com',
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!
-);
+try {
+  if (process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY) {
+    webpush.setVapidDetails(
+      'mailto:admin@hotelkarim.com',
+      process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+      process.env.VAPID_PRIVATE_KEY
+    );
+  }
+} catch (e) {
+  console.warn("VAPID keys not configured, push notifications won't work in this environment.");
+}
 
 export async function POST(request: Request) {
   try {
