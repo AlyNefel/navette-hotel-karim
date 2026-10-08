@@ -78,8 +78,8 @@ export default function AdminOverview() {
           <p className="text-slate-500 text-sm mt-1">Here is what's happening with your hotel today.</p>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
+        {/* Stats Grid — 2 cols on small, 4 on large */}
+        <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-6">
           {stats.map((s) => {
             const Icon = s.icon;
             return (
@@ -99,11 +99,11 @@ export default function AdminOverview() {
 
         <div className="grid lg:grid-cols-3 gap-8">
           
-          {/* Main Content Area: Recent Bookings */}
+          {/* Main Content Area: Recent Bookings - Card list on mobile, table on desktop */}
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-              <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 bg-slate-50/50">
-                <h3 className="text-slate-800 font-bold text-lg">Recent Bookings</h3>
+              <div className="flex items-center justify-between px-4 md:px-6 py-4 md:py-5 border-b border-slate-100 bg-slate-50/50">
+                <h3 className="text-slate-800 font-bold text-base md:text-lg">Recent Bookings</h3>
                 <Link href="/admin/bookings" className="text-sm font-semibold text-[#0F4C81] hover:text-blue-700 hover:underline flex items-center gap-1 transition">
                   View all <ArrowUpRight className="w-4 h-4" />
                 </Link>
@@ -118,35 +118,51 @@ export default function AdminOverview() {
                   <p className="text-sm">They will appear here once clients submit the form.</p>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm text-left">
-                    <thead className="bg-slate-50/50 text-slate-500 font-semibold border-b border-slate-100">
-                      <tr>
-                        <th className="px-6 py-4 rounded-tl-lg">Client</th>
-                        <th className="px-6 py-4">Date</th>
-                        <th className="px-6 py-4">Type</th>
-                        <th className="px-6 py-4">Status</th>
-                        <th className="px-6 py-4 rounded-tr-lg">Price</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {bookings.slice(0, 5).map((b) => (
-                        <tr key={b.id} className="hover:bg-slate-50 transition-colors group">
-                          <td className="px-6 py-4">
-                            <p className="text-slate-800 font-bold">{b.name}</p>
-                            <p className="text-slate-500 text-xs mt-0.5">{b.email}</p>
-                          </td>
-                          <td className="px-6 py-4 text-slate-600 font-medium">{b.date || "—"}</td>
-                          <td className="px-6 py-4 text-slate-600 capitalize">{b.type}</td>
-                          <td className="px-6 py-4">
-                            <StatusBadge status={b.status} />
-                          </td>
-                          <td className="px-6 py-4 text-[#0F4C81] font-bold">€{b.price || 20}</td>
+                <>
+                  {/* Mobile: cards */}
+                  <div className="md:hidden divide-y divide-slate-100">
+                    {bookings.slice(0, 5).map((b) => (
+                      <div key={b.id} className="p-4 flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="font-bold text-slate-800 text-sm truncate">{b.name}</p>
+                          <p className="text-slate-500 text-xs truncate mt-0.5">{b.date || "—"} · {b.type}</p>
+                        </div>
+                        <div className="flex flex-col items-end gap-1.5 shrink-0">
+                          <StatusBadge status={b.status} />
+                          <span className="text-[#0F4C81] font-bold text-sm">€{b.price || 20}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Desktop: table */}
+                  <div className="hidden md:block overflow-x-auto">
+                    <table className="w-full text-sm text-left">
+                      <thead className="bg-slate-50/50 text-slate-500 font-semibold border-b border-slate-100">
+                        <tr>
+                          <th className="px-6 py-4 rounded-tl-lg">Client</th>
+                          <th className="px-6 py-4">Date</th>
+                          <th className="px-6 py-4">Type</th>
+                          <th className="px-6 py-4">Status</th>
+                          <th className="px-6 py-4 rounded-tr-lg">Price</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {bookings.slice(0, 5).map((b) => (
+                          <tr key={b.id} className="hover:bg-slate-50 transition-colors group">
+                            <td className="px-6 py-4">
+                              <p className="text-slate-800 font-bold">{b.name}</p>
+                              <p className="text-slate-500 text-xs mt-0.5">{b.email}</p>
+                            </td>
+                            <td className="px-6 py-4 text-slate-600 font-medium">{b.date || "—"}</td>
+                            <td className="px-6 py-4 text-slate-600 capitalize">{b.type}</td>
+                            <td className="px-6 py-4"><StatusBadge status={b.status} /></td>
+                            <td className="px-6 py-4 text-[#0F4C81] font-bold">€{b.price || 20}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
               )}
             </div>
           </div>

@@ -21,6 +21,8 @@ type Tour = {
   rating: number;
   reviewCount: number;
   image: string;
+  gallery: string[];
+  galleryPublicIds?: string[];
   badge: string;
   badgeColor: string;
   isActive: boolean;
@@ -70,6 +72,11 @@ export default function AdminToursPage() {
   const [uploadedImagePublicId, setUploadedImagePublicId] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Gallery upload
+  const [gallery, setGallery] = useState<{ url: string; publicId: string | null; isNew?: boolean }[]>([]);
+  const [galleryUploading, setGalleryUploading] = useState(false);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
+
   // Confirm delete
   const [deleteTarget, setDeleteTarget] = useState<Tour | null>(null);
   const [deleting, setDeleting] = useState(false);
@@ -113,6 +120,7 @@ export default function AdminToursPage() {
     setImagePreview(null);
     setUploadedImageUrl(null);
     setUploadedImagePublicId(null);
+    setGallery([]);
     setModalOpen(true);
   };
 
@@ -142,6 +150,15 @@ export default function AdminToursPage() {
     setImagePreview(tour.image);
     setUploadedImageUrl(null);
     setUploadedImagePublicId(null);
+    
+    // Map existing gallery
+    const existingGallery = (tour.gallery || []).map((url, i) => ({
+      url,
+      publicId: tour.galleryPublicIds?.[i] || null,
+      isNew: false
+    }));
+    setGallery(existingGallery);
+    
     setModalOpen(true);
   };
 
@@ -177,6 +194,51 @@ export default function AdminToursPage() {
     reader.readAsDataURL(file);
   };
 
+  const handleGallerySelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setGalleryUploading(true);
+    const newItems: { url: string; publicId: string | null; isNew: boolean }[] = [];
+
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+        
+        const base64 = await new Promise<string>((resolve) => {
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.readAsDataURL(file);
+        });
+
+        const res = await fetch("/api/tours/upload", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ file: base64 }),
+        });
+        
+        const data = await res.json();
+        if (data.url) {
+          newItems.push({ url: data.url, publicId: data.publicId, isNew: true });
+        }
+      }
+      
+      if (newItems.length > 0) {
+        setGallery(prev => [...prev, ...newItems]);
+        showToast(`Added ${newItems.length} images to gallery`);
+      }
+    } catch {
+      showToast("Gallery upload failed", "error");
+    } finally {
+      setGalleryUploading(false);
+      if (galleryInputRef.current) galleryInputRef.current.value = '';
+    }
+  };
+
+  const removeGalleryImage = (index: number) => {
+    setGallery(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSave = async () => {
     if (!form.name.trim() || !form.slug.trim()) {
       showToast("Name and slug are required", "error");
@@ -187,12 +249,17 @@ export default function AdminToursPage() {
       const finalImage = uploadedImageUrl || (editTour?.image ?? "/hero-sidi-bou-said.jpg");
       const finalPublicId = uploadedImagePublicId || (editTour as any)?.imagePublicId || null;
 
+      const finalGalleryUrls = gallery.map(g => g.url);
+      const finalGalleryIds = gallery.map(g => g.publicId).filter(id => id !== null) as string[];
+
       const payload = {
         ...form,
         price: Number(form.price),
         priceGroup: Number(form.priceGroup),
         image: finalImage,
         imagePublicId: finalPublicId,
+        gallery: finalGalleryUrls,
+        galleryPublicIds: finalGalleryIds.length > 0 ? finalGalleryIds : undefined,
         includes: form.includes.split(",").map(s => s.trim()).filter(Boolean),
         excludes: form.excludes.split(",").map(s => s.trim()).filter(Boolean),
         highlights: form.highlights.split(",").map(s => s.trim()).filter(Boolean),
@@ -414,6 +481,42 @@ export default function AdminToursPage() {
                 {uploadedImageUrl && (
                   <p className="text-xs text-green-600 mt-1 flex items-center gap-1"><Check className="w-3 h-3" /> Uploaded to Cloudinary</p>
                 )}
+              </div>
+
+              {/* Gallery Upload */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300">Image Gallery</label>
+                  <button 
+                    onClick={() => galleryInputRef.current?.click()}
+                    disabled={galleryUploading}
+                    className="text-xs flex items-center gap-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-2 py-1 rounded hover:bg-slate-200 dark:hover:bg-slate-600 transition disabled:opacity-50"
+                  >
+                    <Plus className="w-3 h-3" /> Add Images
+                  </button>
+                </div>
+                
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {gallery.map((img, idx) => (
+                    <div key={idx} className="relative h-24 bg-slate-100 dark:bg-slate-700 rounded-xl overflow-hidden group">
+                      <img src={img.url} alt="gallery" className="w-full h-full object-cover" />
+                      <button 
+                        onClick={() => removeGalleryImage(idx)}
+                        className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow-md"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                  
+                  {galleryUploading && (
+                    <div className="relative h-24 bg-slate-100 dark:bg-slate-700 rounded-xl overflow-hidden flex flex-col items-center justify-center text-slate-400 border border-slate-200 dark:border-slate-600">
+                       <div className="w-5 h-5 border-2 border-[#0F4C81] border-t-transparent rounded-full animate-spin mb-1" />
+                       <span className="text-[10px]">Uploading...</span>
+                    </div>
+                  )}
+                </div>
+                <input ref={galleryInputRef} type="file" accept="image/*" multiple onChange={handleGallerySelect} className="hidden" />
               </div>
 
               {/* Basic fields */}

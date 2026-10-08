@@ -3,9 +3,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { AdminTopBar } from "@/components/admin/AdminSidebar";
 import { CreateBookingModal } from "@/components/admin/CreateBookingModal";
+import { AirportSignModal } from "@/components/admin/AirportSignModal";
 import {
   CalendarCheck, Search, Filter, CheckCircle,
-  XCircle, Clock, Mail, Phone, Users, RefreshCw, ChevronDown, Car, Plane, Plus, Trash2
+  XCircle, Clock, Mail, Phone, Users, RefreshCw, ChevronDown, Car, Plane, Plus, Trash2, Printer
 } from "lucide-react";
 
 type Booking = {
@@ -43,6 +44,7 @@ export default function BookingsPage() {
   const [toast, setToast] = useState("");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingBooking, setEditingBooking] = useState<Booking | null>(null);
+  const [isSignModalOpen, setIsSignModalOpen] = useState(false);
 
   const fetchBookings = useCallback(async () => {
     setLoading(true);
@@ -115,10 +117,10 @@ export default function BookingsPage() {
         </div>
       )}
 
-      <div className="p-4 md:p-8 flex-1 max-w-7xl w-full mx-auto flex flex-col md:flex-row gap-6">
+      <div className="p-4 md:p-8 flex-1 max-w-7xl w-full mx-auto flex flex-col gap-6">
         
         {/* Left Side: Table & Filters */}
-        <div className="flex-1 space-y-6">
+        <div className="flex-1 space-y-4 md:space-y-6">
           
           <div className="bg-white border border-slate-200 p-4 rounded-2xl flex flex-col sm:flex-row gap-4 shadow-sm">
             <div className="relative flex-1">
@@ -170,64 +172,90 @@ export default function BookingsPage() {
                 <p className="font-medium">No bookings found.</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                  <thead className="bg-slate-50/80 text-slate-500 font-semibold border-b border-slate-100">
-                    <tr>
-                      <th className="px-6 py-4">Client Info</th>
-                      <th className="px-6 py-4">Service</th>
-                      <th className="px-6 py-4">Status</th>
-                      <th className="px-6 py-4">Date</th>
-                      <th className="px-6 py-4 text-right">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {filtered.map((b) => {
-                      const style = statusStyles[b.status] || statusStyles.pending;
-                      const Icon = style.icon;
-                      return (
-                        <tr 
-                          key={b.id} 
-                          className={`group transition cursor-pointer hover:bg-blue-50/50 ${selected?.id === b.id ? "bg-blue-50" : ""}`}
-                          onClick={() => setSelected(b)}
-                        >
-                          <td className="px-6 py-4">
-                            <p className="font-bold text-slate-800 group-hover:text-[#0F4C81] transition-colors">{b.name}</p>
-                            <p className="text-slate-500 text-xs mt-0.5">{b.email}</p>
-                          </td>
-                          <td className="px-6 py-4">
-                            <span className="capitalize font-medium text-slate-700">{b.type}</span>
-                            <p className="text-slate-400 text-xs mt-0.5 truncate max-w-[120px]">{b.direction}</p>
-                          </td>
-                          <td className="px-6 py-4">
-                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border ${style.badge}`}>
-                              <Icon className="w-3 h-3" />
-                              {b.status.charAt(0).toUpperCase() + b.status.slice(1)}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 text-slate-600 font-medium">
-                            {b.date || "—"} <span className="text-slate-400 text-xs block">{b.time}</span>
-                          </td>
-                          <td className="px-6 py-4 text-right">
-                            <button className="text-[#0F4C81] text-xs font-bold hover:underline">
-                              View Details
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
+              <>
+                {/* Mobile: card list */}
+                <div className="md:hidden divide-y divide-slate-100">
+                  {filtered.map((b) => {
+                    const style = statusStyles[b.status] || statusStyles.pending;
+                    const Icon = style.icon;
+                    return (
+                      <div
+                        key={b.id}
+                        className={`p-4 cursor-pointer transition ${selected?.id === b.id ? "bg-blue-50" : "hover:bg-slate-50"}`}
+                        onClick={() => setSelected(b)}
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="font-bold text-slate-800 text-sm truncate">{b.name}</p>
+                            <p className="text-slate-500 text-xs truncate mt-0.5">{b.date || "—"} · {b.time} · <span className="capitalize">{b.type}</span></p>
+                          </div>
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold border shrink-0 ${style.badge}`}>
+                            <Icon className="w-3 h-3" />
+                            {b.status.charAt(0).toUpperCase() + b.status.slice(1)}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {/* Desktop: table */}
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full text-sm text-left">
+                    <thead className="bg-slate-50/80 text-slate-500 font-semibold border-b border-slate-100">
+                      <tr>
+                        <th className="px-6 py-4">Client Info</th>
+                        <th className="px-6 py-4">Service</th>
+                        <th className="px-6 py-4">Status</th>
+                        <th className="px-6 py-4">Date</th>
+                        <th className="px-6 py-4 text-right">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {filtered.map((b) => {
+                        const style = statusStyles[b.status] || statusStyles.pending;
+                        const Icon = style.icon;
+                        return (
+                          <tr
+                            key={b.id}
+                            className={`group transition cursor-pointer hover:bg-blue-50/50 ${selected?.id === b.id ? "bg-blue-50" : ""}`}
+                            onClick={() => setSelected(b)}
+                          >
+                            <td className="px-6 py-4">
+                              <p className="font-bold text-slate-800 group-hover:text-[#0F4C81] transition-colors">{b.name}</p>
+                              <p className="text-slate-500 text-xs mt-0.5">{b.email}</p>
+                            </td>
+                            <td className="px-6 py-4">
+                              <span className="capitalize font-medium text-slate-700">{b.type}</span>
+                              <p className="text-slate-400 text-xs mt-0.5 truncate max-w-[120px]">{b.direction}</p>
+                            </td>
+                            <td className="px-6 py-4">
+                              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border ${style.badge}`}>
+                                <Icon className="w-3 h-3" />
+                                {b.status.charAt(0).toUpperCase() + b.status.slice(1)}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 text-slate-600 font-medium">
+                              {b.date || "—"} <span className="text-slate-400 text-xs block">{b.time}</span>
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                              <button className="text-[#0F4C81] text-xs font-bold hover:underline">View Details</button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
           </div>
         </div>
 
-        {/* Right Side: Details Panel */}
+        {/* Details Panel - bottom sheet on mobile, side panel on desktop */}
+        {selected && (
         <div className="w-full md:w-96 shrink-0">
-          <div className="bg-white border border-slate-200 rounded-2xl shadow-sm sticky top-24 overflow-hidden">
-            {selected ? (
-              <div>
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-sm md:sticky md:top-24 overflow-hidden">
+
                 <div className="bg-slate-50 border-b border-slate-100 p-6 text-center relative">
                   <div className="w-16 h-16 bg-[#0F4C81] rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto shadow-md mb-3">
                     {selected.name.charAt(0)}
@@ -284,13 +312,21 @@ export default function BookingsPage() {
                     </div>
                   )}
 
-                  <div className="pt-3">
+                  <div className="pt-3 flex flex-col gap-2">
                     <button
                       onClick={() => { setEditingBooking(selected); setIsCreateModalOpen(true); }}
                       className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2"
                     >
                       Edit Booking Details
                     </button>
+                    {selected.type === "transfer" && selected.direction?.toLowerCase().includes("to hotel") && (
+                      <button
+                        onClick={() => setIsSignModalOpen(true)}
+                        className="w-full bg-[#0F4C81]/10 hover:bg-[#0F4C81]/20 text-[#0F4C81] font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2"
+                      >
+                        <Printer className="w-4 h-4" /> Print Airport Sign
+                      </button>
+                    )}
                   </div>
                 </div>
 
@@ -338,15 +374,9 @@ export default function BookingsPage() {
                   </div>
                 </div>
               </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full min-h-[400px] text-slate-400 p-8 text-center bg-slate-50/50">
-                <CalendarCheck className="w-16 h-16 mb-4 text-slate-200" />
-                <h3 className="text-lg font-bold text-slate-700 mb-1">No Booking Selected</h3>
-                <p className="text-sm">Click on any row in the table to view the full details and take action.</p>
-              </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <CreateBookingModal 
@@ -364,6 +394,14 @@ export default function BookingsPage() {
           }
         }} 
       />
+
+      {isSignModalOpen && selected && (
+        <AirportSignModal
+          clientName={selected.name}
+          flightNumber={selected.flight_number}
+          onClose={() => setIsSignModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
