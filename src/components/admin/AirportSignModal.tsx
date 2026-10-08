@@ -58,7 +58,7 @@ export function AirportSignModal({ clientName, flightNumber, onClose }: Props) {
   html, body { width:297mm; height:210mm; print-color-adjust:exact; -webkit-print-color-adjust:exact; }
   .sign {
     width:297mm; height:210mm;
-    background: linear-gradient(135deg, #0a2d50 0%, #0F4C81 45%, #1a6bb5 75%, #0a2d50 100%);
+    background: linear-gradient(135deg, #0a1f38 0%, #0d3561 45%, #0e4a7a 75%, #0a1f38 100%);
     display:flex; flex-direction:row; align-items:stretch;
     position:relative; overflow:hidden;
   }
@@ -85,7 +85,7 @@ export function AirportSignModal({ clientName, flightNumber, onClose }: Props) {
   .stars { color:#E0A96D; font-size:12pt; letter-spacing:3px; }
   .divider { width:40mm; height:1px; background:linear-gradient(90deg, transparent, rgba(224,169,109,.7), transparent); }
   .transfer-label { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:10pt; color:rgba(255,255,255,.7); letter-spacing:1px; text-align:center; }
-  .location { font-family:'Montserrat',sans-serif; font-size:7pt; font-weight:300; color:rgba(255,255,255,.3); letter-spacing:3px; text-transform:uppercase; }
+  .location { display: none; }
   /* Right column */
   .right {
     display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -123,9 +123,7 @@ export function AirportSignModal({ clientName, flightNumber, onClose }: Props) {
     <div class="logo-ring"><div class="logo-letter">K</div></div>
     <div class="hotel-name">Hotel<br>Karim</div>
     <div class="stars">&#9733; &#9733;</div>
-    <div class="divider"></div>
     <div class="transfer-label">Airport Transfer</div>
-    <div class="location">Hammamet &middot; Tunisia</div>
   </div>
   <div class="right">
     <div class="greeting">Bienvenue &nbsp;&middot;&nbsp; Welcome &nbsp;&middot;&nbsp; &#1571;&#1607;&#1604;&#1611;&#1611; &#1608;&#1587;&#1607;&#1604;&#1611;&#1611;</div>
@@ -192,7 +190,7 @@ export function AirportSignModal({ clientName, flightNumber, onClose }: Props) {
             style={{
               width: "540px",
               height: "382px",
-              background: "linear-gradient(135deg, #0a2d50 0%, #0F4C81 45%, #1a6bb5 75%, #0a2d50 100%)",
+              background: "linear-gradient(135deg, #0a1f38 0%, #0d3561 45%, #0e4a7a 75%, #0a1f38 100%)",
               borderRadius: "12px",
               display: "flex",
               flexDirection: "row",
@@ -223,7 +221,7 @@ export function AirportSignModal({ clientName, flightNumber, onClose }: Props) {
               <div style={{ color: "#E0A96D", fontSize: 10, letterSpacing: 3 }}>★ ★</div>
               <div style={{ width: 70, height: 1, background: "linear-gradient(90deg, transparent, rgba(224,169,109,.7), transparent)" }} />
               <div style={{ fontFamily: "Georgia,serif", fontStyle: "italic", fontSize: 8, color: "rgba(255,255,255,.65)", textAlign: "center" }}>Airport Transfer</div>
-              <div style={{ fontSize: 7, color: "rgba(255,255,255,.25)", letterSpacing: 2, textTransform: "uppercase", textAlign: "center" }}>Hammamet · Tunisia</div>
+              <div style={{ fontSize: 7, color: "rgba(255,255,255,.25)", letterSpacing: 2, textTransform: "uppercase", textAlign: "center", display: "none" }}>Hammamet · Tunisia</div>
             </div>
 
             {/* Right */}
