@@ -319,12 +319,12 @@ export default function BookingsPage() {
                     >
                       Edit Booking Details
                     </button>
-                    {selected.type === "transfer" && (selected.direction?.toLowerCase().includes("to hotel") || selected.direction?.toLowerCase().includes("to_hotel")) && (
+                    {selected.type?.toLowerCase() === "transfer" && (
                       <button
                         onClick={() => setIsSignModalOpen(true)}
                         className="w-full bg-[#0F4C81]/10 hover:bg-[#0F4C81]/20 text-[#0F4C81] font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2"
                       >
-                        <Printer className="w-4 h-4" /> Print Airport Sign
+                        <Printer className="w-4 h-4" /> Print Welcome Sign
                       </button>
                     )}
                   </div>
